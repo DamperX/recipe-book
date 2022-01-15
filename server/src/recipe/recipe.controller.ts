@@ -6,10 +6,7 @@ import {
   Param,
   Patch,
   Post,
-  UploadedFile,
-  UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ObjectId } from 'mongoose';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
@@ -22,13 +19,8 @@ export class RecipeController {
   constructor(private recipeService: RecipeService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('picture'))
-  create(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() dto: CreateRecipeDto,
-  ) {
-    console.log(file);
-    return this.recipeService.create(dto, '');
+  create(@Body() dto: CreateRecipeDto) {
+    return this.recipeService.create(dto);
   }
 
   @Get()

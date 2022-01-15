@@ -14,7 +14,7 @@ export class RecipeService {
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>,
   ) {}
 
-  async create(dto: CreateRecipeDto, picture): Promise<Recipe> {
+  async create(dto: CreateRecipeDto): Promise<Recipe> {
     const recipe = await this.recipeModel.create({ ...dto });
     return recipe;
   }
