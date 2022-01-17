@@ -1,20 +1,50 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Recipe } from 'src/recipe/schemas/recipe.schema';
-import * as mongoose from 'mongoose';
 
 export type CategoryDocument = Category & Document;
 
+export enum TopCategory {
+  Recipes,
+  Features,
+  Shop,
+}
+
+export class TopPageAdvantage {
+  @Prop()
+  title: string;
+
+  @Prop()
+  description: string;
+}
+
 @Schema()
 export class Category {
-  @Prop()
-  name: string;
+  @Prop({ enum: TopCategory })
+  firstCategory: TopCategory;
 
   @Prop()
-  count: number;
+  secondCategory: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipes' }] })
-  recipes: Recipe[];
+  @Prop({ unique: true })
+  alias: string;
+
+  @Prop()
+  title: string;
+
+  @Prop()
+  metaTitle: string;
+
+  @Prop()
+  metaDescription: string;
+
+  @Prop()
+  category: string;
+
+  @Prop({ type: () => [TopPageAdvantage] })
+  advantages?: TopPageAdvantage[];
+
+  @Prop()
+  seoText?: string;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

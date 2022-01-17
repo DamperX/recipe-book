@@ -19,27 +19,20 @@ export class RecipeService {
     return recipe;
   }
 
-  async getAll(): Promise<Recipe[]> {
-    const recipes = await this.recipeModel.find();
-    return recipes;
-  }
-
   async getOne(id: ObjectId): Promise<Recipe> {
     const recipe = await this.recipeModel.findById(id).populate('comments');
     return recipe;
   }
 
   async delete(id: ObjectId): Promise<string> {
-    const recipe = await this.recipeModel.findByIdAndDelete(id).exec();
+    const recipe = await this.recipeModel.findByIdAndDelete(id);
     return recipe.name;
   }
 
   async updateById(id: ObjectId, dto: Recipe): Promise<Recipe> {
-    const recipe = await this.recipeModel
-      .findByIdAndUpdate(id, dto, {
-        new: true,
-      })
-      .exec();
+    const recipe = await this.recipeModel.findByIdAndUpdate(id, dto, {
+      new: true,
+    });
 
     return recipe;
   }
@@ -67,7 +60,7 @@ export class RecipeService {
   // Comments
   async addComment(dto: CreateCommentDto): Promise<Comment> {
     const recipe = await this.recipeModel.findById(dto.recipeId);
-    const comment = await this.commentModel.create({ ...dto });
+    const comment = await this.commentModel.create(dto);
     recipe.comments.push(comment._id);
     await recipe.save();
     return comment;

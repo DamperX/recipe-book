@@ -36,7 +36,7 @@ export class Recipe {
   picture: string;
 
   @Prop()
-  short_text: string;
+  shortText: string;
 
   @Prop()
   category: string;

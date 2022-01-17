@@ -11,9 +11,9 @@ class RecipeStepDto {
 }
 
 export class CreateRecipeDto {
-  readonly name;
-  readonly picture;
-  readonly short_text;
+  readonly name: string;
+  readonly picture: string;
+  readonly shortText: string;
   readonly category: string;
   readonly settings: RecipeSettingDto[];
   readonly steps: RecipeStepDto[];

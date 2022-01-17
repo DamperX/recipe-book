@@ -18,14 +18,9 @@ import { Recipe } from './schemas/recipe.schema';
 export class RecipeController {
   constructor(private recipeService: RecipeService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() dto: CreateRecipeDto) {
     return this.recipeService.create(dto);
-  }
-
-  @Get()
-  getAll() {
-    return this.recipeService.getAll();
   }
 
   @Get(':id')
@@ -48,7 +43,7 @@ export class RecipeController {
     return this.recipeService.findByCategory(dto);
   }
 
-  @Post('/comment')
+  @Post('/comment/create')
   addComment(@Body() dto: CreateCommentDto) {
     return this.recipeService.addComment(dto);
   }
