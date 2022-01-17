@@ -5,7 +5,6 @@ import { Title } from '..';
 import { RecipeCardProps } from './RecipeCard.prop';
 
 export const RecipeCard = ({ recipe }: RecipeCardProps) => {
-  console.log(recipe);
   return (
     <Link href={`/recipe/${recipe._id}`}>
       <a className="block">
