@@ -2,11 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import {
-  Category,
-  CategoryDocument,
-  TopCategory,
-} from './schemas/category.schema';
+import { Category, CategoryDocument } from './schemas/category.schema';
 
 @Injectable()
 export class CategoryService {
@@ -38,22 +34,7 @@ export class CategoryService {
     return category;
   }
 
-  async findByCategory(firstCategory: TopCategory): Promise<Category[]> {
-    return this.categoryModel
-      .aggregate()
-      .match({ firstCategory })
-      .group({
-        _id: {
-          secondCategory: '$secondCategory',
-        },
-        pages: {
-          $push: {
-            alias: '$alias',
-            title: '$title',
-            _id: '$_id',
-            category: '$category',
-          },
-        },
-      });
+  async getAllCategories(): Promise<Category[]> {
+    return this.categoryModel.find();
   }
 }

@@ -1,5 +1,3 @@
-import { TopCategory } from './page.interface';
-
 export interface PageItem {
   alias: string;
   title: string;
@@ -8,14 +6,8 @@ export interface PageItem {
 }
 
 export interface MenuItem {
-  _id: {
-    secondCategory: string;
-  };
-  pages: PageItem[];
-}
-
-export interface TopLvlMenuItem {
-  route: string;
-  name: string;
-  id: TopCategory;
+  _id: string;
+  description: string;
+  title: string;
+  alias: string;
 }

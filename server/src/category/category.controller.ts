@@ -10,7 +10,6 @@ import {
 import { ObjectId } from 'mongoose';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { FindCategoryDto } from './dto/find-category.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -41,8 +40,8 @@ export class CategoryController {
     return this.categoryService.updateById(id, dto);
   }
 
-  @Post('find')
-  find(@Body() dto: FindCategoryDto) {
-    return this.categoryService.findByCategory(dto.firstCategory);
+  @Get()
+  getAll() {
+    return this.categoryService.getAllCategories();
   }
 }

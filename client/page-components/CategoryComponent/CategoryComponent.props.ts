@@ -1,11 +1,7 @@
-import {
-  CategoryPageModel,
-  TopCategory,
-} from '../../interfaces/page.interface';
+import { MenuItem } from '../../interfaces/menu.interface';
 import { RecipeModel } from '../../interfaces/recipe.interface';
 
 export interface TopPageComponentProps {
-  firstCategory: TopCategory;
-  page: CategoryPageModel;
+  category: MenuItem;
   recipes: RecipeModel[];
 }

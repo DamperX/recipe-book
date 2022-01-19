@@ -41,7 +41,7 @@ export class RecipeService {
     const recipes = await this.recipeModel.aggregate([
       {
         $match: {
-          category: dto.category,
+          categoryAlias: dto.category,
         },
       },
       {

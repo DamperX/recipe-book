@@ -10,7 +10,7 @@ export interface ISetting {
   valueName: string;
 }
 
-export interface ISteps {
+export interface IStep {
   name: string;
   text: string;
   position: number;
@@ -24,7 +24,7 @@ export interface IRecipe {
   picture: string;
   settings: ISetting[];
   comments: IComment[];
-  steps: ISteps[];
+  steps: IStep[];
 }
 
 export interface RecipeComponentProps {

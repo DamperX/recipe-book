@@ -2,59 +2,35 @@ import type {
   GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
+  NextPage,
 } from 'next';
 import axios from 'axios';
 import { withLayout } from '../../hoc/withLayout';
 import { MenuItem } from '../../interfaces/menu.interface';
 import { ParsedUrlQuery } from 'querystring';
-import {
-  CategoryPageModel,
-  TopCategory,
-} from '../../interfaces/page.interface';
 import { RecipeModel } from '../../interfaces/recipe.interface';
-import { firstLvlMenu } from '../../helpers/helpers';
 import { CategoryComponent } from '../../page-components/CategoryComponent/CategoryComponent';
 
 interface CategoryPageProps extends Record<string, unknown> {
   menu: MenuItem[];
-  firstCategory: TopCategory;
-  page: CategoryPageModel;
   recipes: RecipeModel[];
+  pageInfo: MenuItem;
 }
 
-const Category = ({
-  firstCategory,
-  page,
-  recipes,
-}: CategoryPageProps): JSX.Element => {
-  return (
-    <CategoryComponent
-      firstCategory={firstCategory}
-      page={page}
-      recipes={recipes}
-    />
-  );
+const Category: NextPage<CategoryPageProps> = ({ pageInfo, recipes }) => {
+  console.log(recipes);
+  return <CategoryComponent recipes={recipes} category={pageInfo} />;
 };
 
 export default withLayout(Category);
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  let paths: string[] = [];
-  for (const firstMenuItem of firstLvlMenu) {
-    const { data: menu } = await axios.post<MenuItem[]>(
-      process.env.NEXT_PUBLIC_DOMAIN + '/category/find',
-      { firstCategory: firstMenuItem.id }
-    );
-
-    paths = paths.concat(
-      menu.flatMap((subMenu) =>
-        subMenu.pages.map((page) => `/${firstMenuItem.route}/${page.alias}`)
-      )
-    );
-  }
+  const { data: menu } = await axios.get<MenuItem[]>(
+    process.env.NEXT_PUBLIC_DOMAIN + '/category'
+  );
 
   return {
-    paths,
+    paths: menu.map((menuItem) => `/type/${menuItem.alias}`),
     fallback: true,
   };
 };
@@ -68,18 +44,9 @@ export const getStaticProps: GetStaticProps<CategoryPageProps> = async ({
     };
   }
 
-  const firstCategoryItem = firstLvlMenu.find((m) => m.route === params.type);
-
-  if (!firstCategoryItem) {
-    return {
-      notFound: true,
-    };
-  }
-
   try {
-    const { data: menu } = await axios.post<MenuItem[]>(
-      process.env.NEXT_PUBLIC_DOMAIN + '/category/find',
-      { firstCategory: firstCategoryItem.id }
+    const { data: menu } = await axios.get<MenuItem[]>(
+      process.env.NEXT_PUBLIC_DOMAIN + '/category'
     );
 
     if (menu.length === 0) {
@@ -88,14 +55,14 @@ export const getStaticProps: GetStaticProps<CategoryPageProps> = async ({
       };
     }
 
-    const { data: page } = await axios.get<CategoryPageModel>(
+    const { data: pageInfo } = await axios.get<MenuItem>(
       process.env.NEXT_PUBLIC_DOMAIN + '/category/byAlias/' + params.alias
     );
 
     const { data: recipes } = await axios.post<RecipeModel[]>(
       process.env.NEXT_PUBLIC_DOMAIN + '/recipes/find',
       {
-        category: page.category,
+        category: params.alias,
         limit: 10,
       }
     );
@@ -103,9 +70,8 @@ export const getStaticProps: GetStaticProps<CategoryPageProps> = async ({
     return {
       props: {
         menu,
-        firstCategory: firstCategoryItem.id,
-        page,
         recipes,
+        pageInfo,
       },
     };
   } catch {

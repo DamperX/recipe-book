@@ -5,7 +5,9 @@ import { Button, Paragraph, Title } from '../../components';
 import { useInput } from '../../hooks/useinput';
 import { IRecipe, RecipeComponentProps } from './RecipeComponent.prop';
 
-export const RecipeComponent = ({ recipe }: RecipeComponentProps) => {
+export const RecipeComponent = ({
+  recipe,
+}: RecipeComponentProps): JSX.Element => {
   const [recipeState, setRecipeState] = useState<IRecipe>(recipe);
   const username = useInput('');
   const text = useInput('');

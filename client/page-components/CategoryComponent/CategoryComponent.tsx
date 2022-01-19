@@ -3,13 +3,12 @@ import { Paragraph, RecipeCard, Title } from '../../components';
 import { TopPageComponentProps } from './CategoryComponent.props';
 
 export const CategoryComponent = ({
-  page,
+  category,
   recipes,
-  firstCategory,
 }: TopPageComponentProps): JSX.Element => {
   return (
     <div>
-      <Title variant="h1">{page.title}</Title>
+      <Title variant="h1">{category.title}</Title>
       <ul className="flex flex-wrap -mx-4">
         {recipes &&
           recipes.map((recipe) => (
@@ -19,7 +18,9 @@ export const CategoryComponent = ({
           ))}
       </ul>
 
-      {page.seoText && <Paragraph size="md">{page.seoText}</Paragraph>}
+      {category.description && (
+        <Paragraph size="md">{category.description}</Paragraph>
+      )}
     </div>
   );
 };

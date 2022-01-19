@@ -39,7 +39,7 @@ export class Recipe {
   shortText: string;
 
   @Prop()
-  category: string;
+  categoryAlias: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
   comments: Comment[];
